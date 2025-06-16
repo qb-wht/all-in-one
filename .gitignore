@@ -3,3 +3,8 @@ server/.yarn
 server/node_modules
 server/dist
 server/.env
+client/.yarn
+client/.next
+client/node_modules
+client/dist
+client/.env
