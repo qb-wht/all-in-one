@@ -3,6 +3,10 @@
 binary/utils/.idea
 binary/utils/target
 
+binary/wasm/.idea
+binary/wasm/target
+binary/wasm/pkg
+
 client/.yarn
 client/.next
 client/node_modules

@@ -1148,6 +1148,7 @@ __metadata:
     react: "npm:^19.0.0"
     react-dom: "npm:^19.0.0"
     typescript: "npm:^5"
+    wasm: "file:../binary/wasm/pkg"
   languageName: unknown
   linkType: soft
 
@@ -3636,6 +3637,13 @@ __metadata:
   dependencies:
     punycode: "npm:^2.1.0"
   checksum: 10c0/4ef57b45aa820d7ac6496e9208559986c665e49447cb072744c13b66925a362d96dd5a46c4530a6b8e203e5db5fe849369444440cb22ecfc26c679359e5dfa3c
+  languageName: node
+  linkType: hard
+
+"wasm@file:../binary/wasm/pkg::locator=client%40workspace%3A.":
+  version: 0.1.0
+  resolution: "wasm@file:../binary/wasm/pkg#../binary/wasm/pkg::hash=3ce9f2&locator=client%40workspace%3A."
+  checksum: 10c0/aaf16e49006065f63fc8f0816b535cc0814cc468465a78dbc0b2a5f22e6b6eea679d314e6746945336a2ec114f9499b96d6339df7e7a57985a33f6c55a22c73d
   languageName: node
   linkType: hard
 
