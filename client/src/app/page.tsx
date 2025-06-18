@@ -1,17 +1,34 @@
 "use client";
 
-import { useEffect } from "react";
-import styles from "./page.module.css";
-import { greet } from "wasm";
+import { useState } from "react";
+import { CodeEditor } from "./codeEditor";
+import { ViewEditor } from "./viewEditor";
+import { initialContent } from "./constants";
 
 export default function Home() {
-  useEffect(() => {
-    greet();
-  }, []);
+  const [isSource, setIsSource] = useState(true);
+  const [content, setContent] = useState(initialContent);
 
   return (
-    <div className={styles.page}>
-      <h1>Hello world</h1>
+    <div className="page gap-1">
+      <div>
+        <button onClick={() => setIsSource((p) => !p)}>
+          {isSource ? "Open View Editor" : "Open Code Editor"}
+        </button>
+      </div>
+
+      {isSource ? (
+        <CodeEditor
+          content={content}
+          onChange={(value) => {
+            if (value) {
+              setContent(value);
+            }
+          }}
+        />
+      ) : (
+        <ViewEditor />
+      )}
     </div>
   );
 }
