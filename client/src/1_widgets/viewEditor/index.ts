@@ -1,1 +1,1 @@
-export { ViewEditor } from "./ui/ViewEditor";
+export {ViewEditor} from './ui/ViewEditor';

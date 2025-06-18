@@ -1,1 +1,1 @@
-export { createDB } from './IndexedDB';
+export {createDB} from './IndexedDB';

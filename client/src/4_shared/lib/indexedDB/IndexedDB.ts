@@ -16,10 +16,10 @@ export async function createDB() {
           autoIncrement: true,
         });
 
-        db.createObjectStore('logs', { autoIncrement: true });
+        db.createObjectStore('logs', {autoIncrement: true});
 
         userStore.createIndex('age', 'age');
-        userStore.createIndex('skills', 'skills', { multiEntry: true });
+        userStore.createIndex('skills', 'skills', {multiEntry: true});
 
         tr.objectStore('users').add({
           name: 'Bob',
