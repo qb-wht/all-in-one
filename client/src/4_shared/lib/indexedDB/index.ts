@@ -1,1 +1,2 @@
-export {createDB} from './IndexedDB';
+export {connection} from './connection';
+export {resolveRequest} from './resolveRequest';

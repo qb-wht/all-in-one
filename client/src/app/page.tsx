@@ -4,17 +4,17 @@ import {useEffect, useState} from 'react';
 import {CodeEditor} from '../1_widgets/codeEditor';
 import {ViewEditor} from '../1_widgets/viewEditor';
 import {initialContent} from './constants';
-import {createDB} from '@/4_shared/lib/indexedDB';
+import {connection} from '@/4_shared/lib/indexedDB';
 
 export default function Home() {
   const [isSource, setIsSource] = useState(true);
   const [content, setContent] = useState(initialContent);
 
   useEffect(() => {
-    createDB().then((db) => {
+    connection.then((db) => {
       const tr = db.transaction(['users', 'logs']);
 
-      const users = tr.objectStore('users').index('age').getAll(IDBKeyRange.lowerBound(42));
+      const users = tr.objectStore('users').getAll();
 
       const logs = tr.objectStore('logs').getAll();
 
