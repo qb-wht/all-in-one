@@ -1,19 +1,38 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { CodeEditor } from "./codeEditor";
-import { ViewEditor } from "./viewEditor";
-import { initialContent } from "./constants";
+import { useEffect, useState } from 'react';
+import { CodeEditor } from '../1_widgets/codeEditor';
+import { ViewEditor } from '../1_widgets/viewEditor';
+import { initialContent } from './constants';
+import { createDB } from '@/4_shared/lib/indexedDB';
 
 export default function Home() {
   const [isSource, setIsSource] = useState(true);
   const [content, setContent] = useState(initialContent);
 
+  useEffect(() => {
+    createDB().then((db) => {
+      const tr = db.transaction(['users', 'logs']);
+
+      const users = tr
+        .objectStore('users')
+        .index('age')
+        .getAll(IDBKeyRange.lowerBound(42));
+
+      const logs = tr.objectStore('logs').getAll();
+
+      tr.oncomplete = () => {
+        console.log(users.result);
+        console.log(logs.result);
+      };
+    });
+  }, []);
+
   return (
     <div className="page gap-1">
       <div>
         <button onClick={() => setIsSource((p) => !p)}>
-          {isSource ? "Open View Editor" : "Open Code Editor"}
+          {isSource ? 'Open View Editor' : 'Open Code Editor'}
         </button>
       </div>
 
