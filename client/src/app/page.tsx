@@ -4,7 +4,8 @@ import {useEffect, useState} from 'react';
 import {CodeEditor} from '../1_widgets/codeEditor';
 import {ViewEditor} from '../1_widgets/viewEditor';
 import {initialContent} from './constants';
-import {connection} from '@/4_shared/lib/indexedDB';
+import {connection, resolveRequest} from '@/4_shared/lib/indexedDB';
+import {resolveTransaction} from '@/4_shared/lib/indexedDB';
 
 export default function Home() {
   const [isSource, setIsSource] = useState(true);
@@ -14,14 +15,21 @@ export default function Home() {
     connection.then((db) => {
       const tr = db.transaction(['users', 'logs']);
 
-      const users = tr.objectStore('users').getAll();
-
+      const users = tr.objectStore('users').index('age').getAll(IDBKeyRange.upperBound(42));
       const logs = tr.objectStore('logs').getAll();
 
-      tr.oncomplete = () => {
+      resolveRequest(users).then((v) => {
+        console.log(v, 'users');
+      });
+
+      resolveRequest(logs).then((v) => {
+        console.log(v, 'logs');
+      });
+
+      resolveTransaction(tr).then(() => {
         console.log(users.result);
         console.log(logs.result);
-      };
+      });
     });
   }, []);
 
