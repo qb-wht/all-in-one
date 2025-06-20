@@ -4,33 +4,23 @@ import {useEffect, useState} from 'react';
 import {CodeEditor} from '../1_widgets/codeEditor';
 import {ViewEditor} from '../1_widgets/viewEditor';
 import {initialContent} from './constants';
-import {connection, resolveRequest} from '@/4_shared/lib/indexedDB';
-import {resolveTransaction} from '@/4_shared/lib/indexedDB';
+import {APIService, IndexedDBEngine} from '@/4_shared/lib/api';
+
+const api = new APIService(new IndexedDBEngine());
 
 export default function Home() {
   const [isSource, setIsSource] = useState(true);
   const [content, setContent] = useState(initialContent);
 
   useEffect(() => {
-    connection.then((db) => {
-      const tr = db.transaction(['users', 'logs']);
-
-      const users = tr.objectStore('users').index('age').getAll(IDBKeyRange.upperBound(42));
-      const logs = tr.objectStore('logs').getAll();
-
-      resolveRequest(users).then((v) => {
-        console.log(v, 'users');
+    api
+      .getUsers()
+      .then((users) => {
+        console.log('Users', users);
+      })
+      .catch((error) => {
+        console.error('Error', error);
       });
-
-      resolveRequest(logs).then((v) => {
-        console.log(v, 'logs');
-      });
-
-      resolveTransaction(tr).then(() => {
-        console.log(users.result);
-        console.log(logs.result);
-      });
-    });
   }, []);
 
   return (
