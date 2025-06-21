@@ -5,6 +5,10 @@ import {resolveRequest} from './resolveRequest';
 export const connection = new Promise<IDBDatabase>((res, rej) => {
   const req = indexedDB.open('example', 1);
 
+  setTimeout(() => {
+    rej('Не удалось подключиться к БД');
+  }, 500);
+
   req.onupgradeneeded = async (e) => {
     const target = e.target as IDBOpenDBRequest;
 
