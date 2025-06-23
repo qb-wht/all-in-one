@@ -1,10 +1,10 @@
-import {Editor, OnChange, useMonaco} from '@monaco-editor/react';
+import {Editor, useMonaco} from '@monaco-editor/react';
 import s from './styles.module.css';
 import {useEffect} from 'react';
 
 type CodeEditorProps = {
   content?: string;
-  onChange?: OnChange;
+  onChange?: (value: string | undefined) => void;
 };
 
 export const CodeEditor = ({content, onChange}: CodeEditorProps) => {

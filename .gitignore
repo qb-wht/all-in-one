@@ -8,10 +8,7 @@ binary/wasm/target
 binary/wasm/pkg
 
 client/.yarn
-client/.next
 client/node_modules
-client/dist
-client/.env
 
 server/.yarn
 server/node_modules

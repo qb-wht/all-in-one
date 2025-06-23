@@ -1,37 +1,14 @@
-'use client';
-
-import {useEffect, useState} from 'react';
-import {CodeEditor} from '../1_widgets/codeEditor';
-import {ViewEditor} from '../1_widgets/viewEditor';
+import {Component} from './Component';
+import './4_shared/styles/index.css';
+import {CodeEditor} from './1_widgets/codeEditor';
+import {ViewEditor} from './1_widgets/viewEditor';
+import {useState} from 'react';
 import {initialContent} from './constants';
-import {APIService, IndexedDBEngine, ServerEngine} from '@/4_shared/lib/api';
 
-let api: APIService;
-
-export default function Home() {
+function App() {
   const [isSource, setIsSource] = useState(true);
   const [isLocal, setIsLocal] = useState(true);
   const [content, setContent] = useState(initialContent);
-
-  useEffect(() => {
-    if (isLocal) {
-      api = new APIService(new IndexedDBEngine());
-      return;
-    }
-
-    api = new APIService(new ServerEngine());
-  }, [isLocal]);
-
-  useEffect(() => {
-    api
-      .getUsers()
-      .then((users) => {
-        console.log('Users', users);
-      })
-      .catch((error) => {
-        console.error('Error', error);
-      });
-  }, [isLocal]);
 
   return (
     <div className='page gap-1'>
@@ -44,6 +21,8 @@ export default function Home() {
           {isSource ? 'Open View Editor' : 'Open Code Editor'}
         </button>
       </div>
+
+      <Component />
 
       {isSource ? (
         <CodeEditor
@@ -60,3 +39,5 @@ export default function Home() {
     </div>
   );
 }
+
+export default App;

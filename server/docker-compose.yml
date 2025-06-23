@@ -1,0 +1,15 @@
+# docker-compose.yml
+version: '3.7'
+services:
+  couchdb:
+    image: couchdb:3.3
+    restart: always
+    ports:
+      - 5984:5984
+    environment:
+      - COUCHDB_USER=admin
+      - COUCHDB_PASSWORD=password
+    volumes:
+      - couchdb_data:/opt/couchdb/data
+volumes:
+  couchdb_data:
