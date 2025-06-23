@@ -4,10 +4,12 @@ export class ServerEngine implements APIEngine {
   isInit: boolean = true;
 
   async getUsers(): Promise<User[]> {
-    const res = await fetch('/api/users', {
+    const res = await fetch('http://localhost:4200/users', {
       method: 'GET',
     });
 
-    return res as unknown as User[];
+    const data = await res.json();
+
+    return data;
   }
 }
