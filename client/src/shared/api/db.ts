@@ -2,7 +2,7 @@ import PouchDB from 'pouchdb';
 
 const localDB = new PouchDB('my_local_db');
 
-const remoteDB = new PouchDB('http://localhost:5984/my_remote_db', {
+const remoteDB = new PouchDB('http://localhost:5984/database', {
   auth: {
     username: 'admin',
     password: 'password',

@@ -1,35 +1,19 @@
 import {useEffect, useState} from 'react';
-import {db} from '@/shared/api';
-import {useProjectStateStore, type Project} from '../model';
+import {useProjectsStore} from '../model';
+import {createProject, subscribeOnProjectsChanges} from '../api';
 
 export const ProjectPicker = () => {
-  const {projects, changeProjects} = useProjectStateStore((state) => state);
+  const {projects} = useProjectsStore((state) => state);
 
   useEffect(() => {
-    const loadProjects = async () => {
-      const result = await db.allDocs<Project>({include_docs: true});
-      changeProjects(result.rows.map((r) => r.doc!) as Project[]);
-    };
-
-    loadProjects();
-
-    const changes = db
-      .changes({
-        since: 'now',
-        live: true,
-        include_docs: true,
-      })
-      .on('change', () => loadProjects());
-
-    return () => changes.cancel();
-  }, [changeProjects]);
+    const unsubscribe = subscribeOnProjectsChanges();
+    return unsubscribe;
+  }, []);
 
   const [title, setTitle] = useState('');
 
   const handleAdd = async () => {
-    if (!title.trim()) return;
-
-    await db.post({title});
+    await createProject(title);
     setTitle('');
   };
 

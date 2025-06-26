@@ -15,5 +15,6 @@ client/node_modules
 
 server/.yarn
 server/node_modules
+server/server_local_db
 server/dist
 server/.env

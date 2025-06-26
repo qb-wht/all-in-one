@@ -1493,9 +1493,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"client2@workspace:.":
+"client@workspace:.":
   version: 0.0.0-use.local
-  resolution: "client2@workspace:."
+  resolution: "client@workspace:."
   dependencies:
     "@eslint/js": "npm:^9.25.0"
     "@monaco-editor/react": "npm:^4.7.0"

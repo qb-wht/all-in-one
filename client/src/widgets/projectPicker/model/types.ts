@@ -4,7 +4,7 @@ export interface Project {
   title: string;
 }
 
-export interface ProjectState {
+export interface ProjectsState {
   projects: Project[];
   changeProjects: (value: Project[]) => void;
 }
