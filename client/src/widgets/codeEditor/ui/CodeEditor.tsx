@@ -17,7 +17,7 @@ export const CodeEditor = () => {
       tokenizer: {
         root: [
           [/\b(style|logic|div|event)\b/, 'keyword'],
-          [/[{}()\[\]]/, '@brackets'],
+          [/[{}()[\]]/, '@brackets'],
           [/[a-z_$][\w$]*/, 'identifier'],
           [/\d+/, 'number'],
           [/".*?"/, 'string'],

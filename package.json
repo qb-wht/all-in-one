@@ -1,0 +1,13 @@
+{
+  "name": "client",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "start:dev": "concurrently '(cd ./client && yarn start:dev)' '(cd ./server && yarn start:dev)'"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0",
+    "lefthook": "^1.11.14"
+  }
+}

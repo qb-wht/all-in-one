@@ -8,7 +8,8 @@
     "start:dev": "vite",
     "preview": "vite preview",
     "format": "prettier --write \"src/**/*\"",
-    "lint": "eslint ."
+    "eslint": "eslint .",
+    "types": "tsc --noEmit"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",
