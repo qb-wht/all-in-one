@@ -1,11 +1,11 @@
 import PouchDB from 'pouchdb';
 
-const localDB = new PouchDB('my_local_db');
+const localDB = new PouchDB('client_local_db');
 
-const remoteDB = new PouchDB('http://localhost:5984/database', {
+const remoteDB = new PouchDB(import.meta.env.VITE_COUCHDB_URL_DATABASE, {
   auth: {
-    username: 'admin',
-    password: 'password',
+    username: import.meta.env.VITE_COUCHDB_USER,
+    password: import.meta.env.VITE_COUCHDB_PASS,
   },
 });
 

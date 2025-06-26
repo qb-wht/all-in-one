@@ -12,6 +12,7 @@ binary/wasm/pkg
 
 client/.yarn
 client/node_modules
+client/.env
 
 server/.yarn
 server/node_modules

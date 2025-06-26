@@ -1,38 +1,46 @@
 import {Injectable, OnModuleInit} from '@nestjs/common';
+import {ConfigService} from '@nestjs/config';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const PouchDB = require('pouchdb');
 
-const localDB = new PouchDB('server_local_db');
-const remoteDB = new PouchDB('http://localhost:5984/database', {
-  auth: {
-    username: 'admin',
-    password: 'password',
-  },
-});
-
-localDB
-  .sync(remoteDB, {
-    live: true,
-    retry: true,
-  })
-  .on('change', (info) => console.log('[SYNC] Change:', info))
-  .on('paused', (err) => console.log('[SYNC] Paused:', err))
-  .on('active', () => console.log('[SYNC] Active'))
-  .on('error', (err) => console.log('[SYNC] Error:', err));
-
-export const db = localDB;
-
 @Injectable()
 export class AppService implements OnModuleInit {
+  private readonly localDB;
+  private readonly remoteDB;
   private unsubscribe?: () => void;
 
+  constructor(private configService: ConfigService) {
+    this.localDB = new PouchDB('server_local_db');
+
+    this.remoteDB = new PouchDB(this.configService.get<string>('COUCHDB_URL_DATABASE'), {
+      auth: {
+        username: this.configService.get<string>('COUCHDB_USER'),
+        password: this.configService.get<string>('COUCHDB_PASS'),
+      },
+    });
+
+    this.setupSync();
+  }
+
+  private setupSync() {
+    this.localDB
+      .sync(this.remoteDB, {
+        live: true,
+        retry: true,
+      })
+      .on('change', (info) => console.log('[SYNC] Change:', info))
+      .on('paused', (err) => console.log('[SYNC] Paused:', err))
+      .on('active', () => console.log('[SYNC] Active'))
+      .on('error', (err) => console.log('[SYNC] Error:', err));
+  }
+
   async onModuleInit() {
-    const result = await db.allDocs({include_docs: true});
+    const result = await this.localDB.allDocs({include_docs: true});
     const projects = result.rows.map((r) => r.doc!).filter(Boolean);
 
     console.log('[DB] Projects loaded', projects);
 
-    const changes = db
+    const changes = this.localDB
       .changes({
         since: 'now',
         live: true,
@@ -50,6 +58,6 @@ export class AppService implements OnModuleInit {
   }
 
   async createProject(title: string) {
-    await db.post({title});
+    await this.localDB.post({title});
   }
 }
