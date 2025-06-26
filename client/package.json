@@ -1,15 +1,14 @@
 {
-  "name": "client2",
+  "name": "client",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "build": "tsc -b && vite build",
     "start:dev": "vite",
-    "preview": "vite preview",
-    "format": "prettier --write \"src/**/*\"",
-    "eslint": "eslint .",
-    "types": "tsc --noEmit"
+    "lint": "eslint .",
+    "types": "tsc --noEmit",
+    "format": "prettier --write \"src/**/*\""
   },
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",
