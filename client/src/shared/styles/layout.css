@@ -1,6 +1,11 @@
-.page {
+.rootPage {
   width: 100vw;
   height: 100vh;
+}
+
+.page {
+  width: 100%;
+  height: calc(100% - 3rem);
   display: flex;
   flex-direction: column;
 }

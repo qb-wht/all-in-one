@@ -1,23 +1,24 @@
-import {useAppSettingsStore} from '@/entities/appSettings/model';
 import s from './styles.module.css';
 import {cn} from '@/shared/lib/classNames';
+import type {PropsOf} from '@/shared/types';
+import {Link} from '@tanstack/react-router';
+import {Button} from 'antd';
 
-export const Navbar = () => {
-  const isLocal = useAppSettingsStore((state) => state.isLocal);
-  const changeIsLocal = useAppSettingsStore((state) => state.changeIsLocal);
+export type NavbarProps = {} & PropsOf<HTMLDivElement>;
 
-  const isSource = useAppSettingsStore((state) => state.isSource);
-  const changeIsSource = useAppSettingsStore((state) => state.changeIsSource);
+export const Navbar = (props: NavbarProps) => {
+  const {className, ...anotherProps} = props;
+  const classNames = cn('row gap-1', s.navbar, className).build();
 
   return (
-    <div className={cn('row gap-1', s.navbar).build()}>
-      <button onClick={() => changeIsLocal(!isLocal)}>
-        {isLocal ? 'Use Local' : 'Use Server'}
-      </button>
+    <div className={classNames} {...anotherProps}>
+      <Link to='/'>
+        <Button>Home</Button>
+      </Link>
 
-      <button onClick={() => changeIsSource(!isSource)}>
-        {isSource ? 'Open View Editor' : 'Open Code Editor'}
-      </button>
+      <Link to='/editor'>
+        <Button>Editor</Button>
+      </Link>
     </div>
   );
 };
