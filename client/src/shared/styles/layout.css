@@ -5,7 +5,7 @@
 
 .page {
   width: 100%;
-  height: calc(100% - 3rem);
+  height: calc(100% - var(--navbar-height));
   display: flex;
   flex-direction: column;
 }
@@ -13,6 +13,22 @@
 .row {
   display: flex;
   width: 100%;
+}
+
+.fd-column {
+  flex-direction: column;
+}
+
+.jc-center {
+  justify-content: center;
+}
+
+.jc-space-between {
+  justify-content: space-between;
+}
+
+.ai-center {
+  align-items: center;
 }
 
 .column {
@@ -29,14 +45,43 @@
   align-items: center;
 }
 
-.gap-1 {
+.max-width {
+  max-width: 600px;
+  width: 100%;
+}
+
+.width-100 {
+  width: 100%;
+}
+
+.g-1 {
   gap: 1rem;
 }
 
-.gap-2 {
+.g-2 {
   gap: 2rem;
 }
 
-.gap-3 {
+.g-3 {
   gap: 3rem;
+}
+
+.p-1 {
+  padding: 1rem;
+}
+
+.pt-1 {
+  padding-top: 1rem;
+}
+
+.pr-1 {
+  padding-right: 1rem;
+}
+
+.pb-1 {
+  padding-bottom: 1rem;
+}
+
+.pl-1 {
+  padding-left: 1rem;
 }

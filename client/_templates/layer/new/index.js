@@ -119,8 +119,6 @@ function attrParser(str) {
 
     return attrs;
   } catch (e) {
-    console.log(e);
-
     throw "hygen: Не корректный синтаксис для параметра 'optionals'";
   }
 }

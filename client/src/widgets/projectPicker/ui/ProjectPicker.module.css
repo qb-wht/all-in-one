@@ -1,0 +1,23 @@
+.projectItem {
+  padding: 0 1rem;
+}
+
+.listItem {
+  border-radius: 0.5rem;
+  transition: background-color 0.3s;
+  border: 1px dashed white !important;
+
+  &:hover {
+    cursor: pointer;
+    border: 1px dashed var(--border-color-1) !important;
+  }
+
+  &:hover .button {
+    opacity: 1;
+  }
+}
+
+.button {
+  transition: opacity 0s;
+  opacity: 0;
+}

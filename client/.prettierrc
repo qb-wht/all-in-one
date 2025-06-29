@@ -9,5 +9,16 @@
   "jsxSingleQuote": true,
   "trailingComma": "all",
   "bracketSpacing": false,
-  "arrowParens": "always"
+  "arrowParens": "always",
+  "plugins": ["@trivago/prettier-plugin-sort-imports"],
+  "importOrder": [
+    "<THIRD_PARTY_MODULES>",
+    "^@/widgets/(.*)$",
+    "^@/features/(.*)$",
+    "^@/entities/(.*)$",
+    "^@/shared/(.*)$",
+    "^@/(.*)$",
+    "^../(.*)",
+    "^./(.*)"
+  ]
 }

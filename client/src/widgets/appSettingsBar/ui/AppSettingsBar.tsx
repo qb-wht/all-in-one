@@ -1,14 +1,13 @@
+import {Button} from 'antd';
+import {useAppSettingsStore} from '@/entities/appSettings';
 import {cn} from '@/shared/lib/classNames';
 import type {PropsOf} from '@/shared/types';
-import s from './EditorSettingsBar.module.css';
-import {Button} from 'antd';
-import {useAppSettingsStore} from '@/entities/appSettings/model';
 
-export type EditorSettingsBarProps = {} & PropsOf<HTMLDivElement>;
+export type AppSettingsBarProps = {} & PropsOf<HTMLDivElement>;
 
-export const EditorSettingsBar = (props: EditorSettingsBarProps) => {
+export const AppSettingsBar = (props: AppSettingsBarProps) => {
   const {className, ...anotherProps} = props;
-  const classNames = cn(s.editorSettingsBar, className).build();
+  const classNames = cn('row g-1 p-1', className).build();
 
   const isLocal = useAppSettingsStore((state) => state.isLocal);
   const changeIsLocal = useAppSettingsStore((state) => state.changeIsLocal);

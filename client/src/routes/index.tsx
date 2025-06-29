@@ -1,5 +1,5 @@
-import {ProjectPicker} from '@/widgets/projectPicker';
 import {createFileRoute} from '@tanstack/react-router';
+import {ProjectPicker} from '@/widgets/projectPicker';
 
 export const Route = createFileRoute('/')({
   component: Index,

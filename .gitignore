@@ -11,6 +11,7 @@ binary/wasm/target
 binary/wasm/pkg
 
 client/.yarn
+client/.tanstack
 client/node_modules
 client/.env
 
