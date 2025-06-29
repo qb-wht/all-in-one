@@ -5,7 +5,7 @@ import {cn} from '@/shared/lib/classNames';
 import type {PropsOf} from '@/shared/types';
 import {createProject, subscribeOnProjectsChanges} from '../api';
 import {useProjectsStore} from '../model';
-import s from './ProjectPicker.module.css';
+import {ProjectItem} from './ProjectItem';
 
 export type ProjectPickerProps = {} & PropsOf<HTMLDivElement>;
 
@@ -20,11 +20,11 @@ export const ProjectPicker = (props: ProjectPickerProps) => {
     return unsubscribe;
   }, []);
 
-  const [title, setTitle] = useState('');
+  const [name, setName] = useState('');
 
   const addProjectHandler = async () => {
-    await createProject(title);
-    setTitle('');
+    await createProject({name});
+    setName('');
   };
 
   return (
@@ -37,7 +37,7 @@ export const ProjectPicker = (props: ProjectPickerProps) => {
         </div>
 
         <div className='row g-1'>
-          <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+          <Input value={name} onChange={(e) => setName(e.target.value)} />
           <Button onClick={addProjectHandler}>Create Project</Button>
         </div>
 
@@ -45,24 +45,10 @@ export const ProjectPicker = (props: ProjectPickerProps) => {
           <List
             className='width-100'
             dataSource={projects}
-            renderItem={({title, _id}) => (
-              <Link to='/editor/$projectId' params={{projectId: _id}}>
-                <List.Item className={s.listItem}>
-                  <div className={cn(s.projectItem, 'row ai-center jc-space-between').build()}>
-                    {title}
-
-                    <Button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        e.preventDefault();
-                      }}
-                      className={s.button}
-                      variant='text'
-                      color='danger'
-                    >
-                      Delete
-                    </Button>
-                  </div>
+            renderItem={(project) => (
+              <Link to='/editor/$projectId' params={{projectId: project._id}}>
+                <List.Item>
+                  <ProjectItem project={project} />
                 </List.Item>
               </Link>
             )}

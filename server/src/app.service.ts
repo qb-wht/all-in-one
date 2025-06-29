@@ -1,7 +1,11 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 import {Injectable, OnModuleInit} from '@nestjs/common';
 import {ConfigService} from '@nestjs/config';
-// eslint-disable-next-line @typescript-eslint/no-require-imports
+
 const PouchDB = require('pouchdb');
+const PouchDBMango = require('pouchdb-find');
+
+PouchDB.plugin(PouchDBMango);
 
 @Injectable()
 export class AppService implements OnModuleInit {

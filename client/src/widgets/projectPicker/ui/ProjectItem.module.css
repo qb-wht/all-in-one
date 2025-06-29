@@ -1,8 +1,6 @@
 .projectItem {
-  padding: 0 1rem;
-}
+  padding: 1rem;
 
-.listItem {
   border-radius: 0.5rem;
   transition: background-color 0.3s;
   border: 1px dashed white !important;

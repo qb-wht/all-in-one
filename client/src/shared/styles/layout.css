@@ -31,6 +31,10 @@
   align-items: center;
 }
 
+.fs-0 {
+  flex-shrink: 0;
+}
+
 .column {
   width: 100%;
   display: flex;
@@ -52,6 +56,10 @@
 
 .width-100 {
   width: 100%;
+}
+
+.width-auto {
+  width: auto;
 }
 
 .g-1 {
