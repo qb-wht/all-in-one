@@ -2,7 +2,7 @@
 to: "<%= component ? `${absPath}/${h.changeCase.camel(layerName)}/ui/${h.changeCase.pascal(layerName)}.tsx` : null %>"
 ---
 <%_ if (props && styles) { _%>
-import {cn} from '@/shared/libs/classNames';
+import {cn} from '@/shared/lib/classNames';
 import type {PropsOf} from '@/shared/types';
 import s from './<%= h.changeCase.pascal(layerName) %>.module.css';
 

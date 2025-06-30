@@ -23,7 +23,7 @@ export const CodeEditor = (props: CodeEditorProps) => {
     monaco.languages.setMonarchTokensProvider('web-blueprints', {
       tokenizer: {
         root: [
-          [/\b(style|logic|div|event)\b/, 'keyword'],
+          [/\b(style|logic|div|button|event|state|import)\b/, 'keyword'],
           [/[{}()[\]]/, '@brackets'],
           [/[a-z_$][\w$]*/, 'identifier'],
           [/\d+/, 'number'],

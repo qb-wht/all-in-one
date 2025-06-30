@@ -1,3 +1,26 @@
 .ant-list .ant-list-item {
   padding: 0;
 }
+
+:where(.css-dev-only-do-not-override-os2fvf).ant-tree.ant-tree-directory
+  .ant-tree-treenode-selected
+  .ant-tree-node-content-wrapper:before,
+:where(.css-dev-only-do-not-override-os2fvf).ant-tree.ant-tree-directory
+  .ant-tree-treenode-selected
+  .ant-tree-node-content-wrapper:hover:before {
+  border-radius: 0;
+}
+
+:where(.css-dev-only-do-not-override-os2fvf).ant-tree.ant-tree-directory
+  .ant-tree-treenode
+  .ant-tree-node-content-wrapper:before {
+  border-radius: 0;
+}
+
+.ant-tree-node-content-wrapper.ant-tree-node-selected {
+  color: rgb(255, 255, 255) !important;
+}
+
+.ant-tree-treenode {
+  padding-left: 1rem;
+}

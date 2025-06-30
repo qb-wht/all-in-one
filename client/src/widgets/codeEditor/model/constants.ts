@@ -1,27 +1,39 @@
-export const initialContent = `
-style StyleName {
-  color: #000000
-  background-color: #ffffff
+export const initialContent = `import "common.wbp"
+
+style PrimaryButton {
+  color: #ffffff
+  background-color: #007bff
+  padding: 8px 16px
+  border-radius: 4px
 }
 
-logic LogicName {
-  console.log("Hello, World!")
+state Counter = 0
+
+logic IncrementCounter {
+  Counter = Counter + 1
+  console.log("Counter is now: " + Counter)
 }
 
-event EventName {
-  logics: LogicName
+event click OnClickIncrement {
+  logics: [IncrementCounter]
 }
 
-div SubElementName {
+button IncrementButton {
+  styles: [PrimaryButton]
+  events: [OnClickIncrement]
+  children: ["Click me!"]
+}
+
+div CounterDisplay {
   styles: []
   events: []
-  children: []
+  children: ["Counter: {Counter}]
 }
-  
-div ElementName {
-  styles: Name
-  events: EventName
-  children: SubElementName
+
+div Root {
+  styles: []
+  events: []
+  children: [CounterDisplay, IncrementButton]
 }
 
 
