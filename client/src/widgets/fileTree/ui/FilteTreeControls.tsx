@@ -1,0 +1,38 @@
+import {Button, Input, Modal} from 'antd';
+import {cn} from '@/shared/lib/classNames';
+import {useInputState} from '@/shared/lib/hooks';
+import type {PropsOf} from '@/shared/types';
+import {createFile} from '../api';
+import {useFileTreeStore} from '../model';
+
+export type FileTreeProps = {} & PropsOf<HTMLDivElement>;
+
+export const FileTreeControls = (props: FileTreeProps) => {
+  const {className, ...anotherProps} = props;
+  const classNames = cn('row pl-1', className).build();
+
+  const isOpenCreateFileModal = useFileTreeStore((state) => state.isOpenCreateFileModal);
+  const changeIsOpenCreateFileModal = useFileTreeStore(
+    (state) => state.changeIsOpenCreateFileModal,
+  );
+
+  const [path, setPath] = useInputState('');
+
+  return (
+    <div className={classNames} {...anotherProps}>
+      <Button onClick={() => changeIsOpenCreateFileModal(true)}>Add File</Button>
+
+      <Modal
+        title='Create File'
+        open={isOpenCreateFileModal}
+        onOk={() => {
+          createFile({path});
+          changeIsOpenCreateFileModal(false);
+        }}
+        onCancel={() => changeIsOpenCreateFileModal(false)}
+      >
+        <Input value={path} onChange={setPath} title='File Path' />
+      </Modal>
+    </div>
+  );
+};

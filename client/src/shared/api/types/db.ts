@@ -20,7 +20,8 @@ export interface Project extends PouchDBDocument, ProjectData {
 // File
 export interface FileData {
   name: string;
-  contend: string;
+  path: string;
+  content: string;
 }
 
 export interface File extends PouchDBDocument, FileData {

@@ -1,0 +1,1 @@
+export {useFileTreeStore} from './fileTree';
