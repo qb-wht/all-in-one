@@ -1,5 +1,6 @@
 import {Tree} from 'antd';
-import {useEffect} from 'react';
+import {useEffect, useRef} from 'react';
+import {Resizer, useResizer} from '@/shared/components/resizer';
 import {cn} from '@/shared/lib/classNames';
 import type {PropsOf} from '@/shared/types';
 import {subscribeOnFilesChanges} from '../api/api';
@@ -25,8 +26,13 @@ export const FileTree = (props: FileTreeProps) => {
     return unsubscribe;
   }, []);
 
+  const bodyRef = useRef<HTMLDivElement | null>(null);
+  const resizerRef = useRef<HTMLDivElement | null>(null);
+
+  const data = useResizer({bodyRef, resizerRef, type: 'horizontal'});
+
   return (
-    <div className={classNames} {...anotherProps} style={{width: '250px'}}>
+    <div ref={bodyRef} className={classNames} {...anotherProps} style={{width: '250px'}}>
       <FileTreeControls />
 
       <DirectoryTree
@@ -34,6 +40,8 @@ export const FileTree = (props: FileTreeProps) => {
         onSelect={(keys) => changeOpenedFilePath((keys as string[])[0])}
         treeData={tree}
       />
+
+      <Resizer ref={resizerRef} type='horizontal' />
     </div>
   );
 };
