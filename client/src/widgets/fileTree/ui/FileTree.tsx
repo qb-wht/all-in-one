@@ -29,7 +29,7 @@ export const FileTree = (props: FileTreeProps) => {
   const bodyRef = useRef<HTMLDivElement | null>(null);
   const resizerRef = useRef<HTMLDivElement | null>(null);
 
-  const data = useResizer({bodyRef, resizerRef, type: 'horizontal'});
+  useResizer({bodyRef, resizerRef, type: 'horizontal'});
 
   return (
     <div ref={bodyRef} className={classNames} {...anotherProps} style={{width: '250px'}}>

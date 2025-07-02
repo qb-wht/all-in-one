@@ -6,7 +6,7 @@ export type UseResizerOptions = {
   type: 'horizontal' | 'vertical';
 };
 
-export const useResizer = ({bodyRef, resizerRef, type}: UseResizerOptions) => {
+export const useResizer = ({bodyRef, resizerRef}: UseResizerOptions) => {
   useEffect(() => {
     const body = bodyRef.current;
     const resizer = resizerRef.current;
