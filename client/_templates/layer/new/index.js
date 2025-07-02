@@ -21,11 +21,12 @@ export default {
   -p, --props     : Генерировать props для компонента?
   -s, --styles    : Генерировать styles для компонента?
   -e, --exports   : Генерировать index export файл?
+  -m, --model     : Генерировать model файл?
   NN
         `
           .trim()
           .replaceAll('NN', '\n'),
-        default: '-cpse',
+        default: '-cpsem',
       },
     ];
 
@@ -66,6 +67,7 @@ function attrParser(str) {
       p: 'props',
       s: 'styles',
       e: 'exports',
+      m: 'model',
     };
 
     const attrs = {
@@ -105,9 +107,14 @@ function attrParser(str) {
       attrs.exports = true;
     }
 
+    if (/^(-m|--model)$/.test(str)) {
+      isDetailed = true;
+      attrs.model = true;
+    }
+
     if (isDetailed) return attrs;
 
-    if (/-[cpse][a-z]+/.test(str)) {
+    if (/-[cpsem][a-z]+/.test(str)) {
       const newStr = str.substr(1);
 
       newStr.split('').forEach((letter) => {
