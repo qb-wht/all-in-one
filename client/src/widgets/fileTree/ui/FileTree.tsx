@@ -27,15 +27,14 @@ export const FileTree = (props: FileTreeProps) => {
   const projectId = useEditorStore((state) => state.projectId);
 
   useEffect(() => {
-    const files = () => {
-      getFiles(projectId).then((files) => {
-        changeTree(createTree(files));
-      });
+    const getAppProjectFiles = async () => {
+      const files = await getFiles(projectId);
+      changeTree(createTree(files));
     };
 
-    files();
+    getAppProjectFiles();
 
-    const unsubscribe = fileService.subscribe(files, files);
+    const unsubscribe = fileService.subscribe(getAppProjectFiles, getAppProjectFiles);
     return unsubscribe;
   }, [projectId]);
 

@@ -1,7 +1,7 @@
-import type {CRUD, Observable, Unsubscribe} from '../types';
+import type {CRUD, Observable, Unsubscribe} from '@/shared/types';
+import {db as couchDB} from '../db';
+import type {CreateProjectDataPrivate, CreateProjectDataPublic, DocInfo, Project} from '../types';
 import {CRUDPouchDB} from './CRUDPouchDB';
-import {db as couchDB} from './db';
-import type {CreateProjectDataPrivate, CreateProjectDataPublic, DocInfo, Project} from './types';
 
 export class ProjectService
   extends CRUDPouchDB<Project>

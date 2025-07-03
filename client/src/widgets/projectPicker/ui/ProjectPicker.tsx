@@ -18,15 +18,14 @@ export const ProjectPicker = (props: ProjectPickerProps) => {
   const changeProjects = useProjectsStore((state) => state.changeProjects);
 
   useEffect(() => {
-    const projects = () => {
-      getProjects().then((projects) => {
-        changeProjects(projects);
-      });
+    const getAllProjects = async () => {
+      const projects = await getProjects();
+      changeProjects(projects);
     };
 
-    projects();
+    getAllProjects();
 
-    const unsubscribe = projectService.subscribe(projects, projects);
+    const unsubscribe = projectService.subscribe(getAllProjects, getAllProjects);
     return unsubscribe;
   }, []);
 

@@ -1,10 +1,9 @@
-import {getFileName} from '../lib/files';
-import type {CRUD, Observable, Unsubscribe} from '../types';
+import {getFileName} from '@/shared/lib/files';
+import type {CRUD, Observable, Unsubscribe} from '../../types';
+import {db as pouchDB} from '../db';
+import type {AllDocs, DocInfo, File, CreateFileDataPrivate, CreateFileDataPublic} from '../types';
 import {CRUDPouchDB} from './CRUDPouchDB';
 import {projectService, type ProjectService} from './ProjectService';
-import {db as pouchDB} from './db';
-import type {AllDocs, DocInfo, File} from './types';
-import type {CreateFileDataPrivate, CreateFileDataPublic} from './types';
 
 export class FileService extends CRUDPouchDB<File> implements CRUD, Observable<File, DocInfo> {
   constructor(
@@ -36,6 +35,29 @@ export class FileService extends CRUDPouchDB<File> implements CRUD, Observable<F
     await this.projectService.update(project);
 
     return this.get(res.id);
+  }
+
+  async remove(file: File): Promise<File> {
+    const project = await this.projectService.get(file.projectId);
+
+    if (!project) {
+      throw new Error('Project not found');
+    }
+
+    const fileToDelete = await this.get(file._id);
+
+    project.fileIds.filter((fileId) => fileId !== fileToDelete._id);
+    project.fileCount = project.fileIds.length;
+
+    const res = await this.db.remove(file);
+
+    if (res.id === fileToDelete._id) {
+      return fileToDelete;
+    }
+
+    await this.projectService.update(project);
+
+    throw new Error('File not found');
   }
 
   async getAll(projectId: string): Promise<File[]> {

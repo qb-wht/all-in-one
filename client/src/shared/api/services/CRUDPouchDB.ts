@@ -1,4 +1,4 @@
-import type {AllDocs} from './types';
+import type {AllDocs} from '../types';
 
 export abstract class CRUDPouchDB<T extends AllDocs> {
   constructor(protected db: PouchDB.Database<AllDocs>) {}
