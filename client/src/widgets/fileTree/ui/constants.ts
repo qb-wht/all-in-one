@@ -1,0 +1,1 @@
+export const MIN_LEFT_SIDEBAR_WIDTH = 200;

@@ -7,6 +7,7 @@ import {subscribeOnFilesChanges} from '../api/api';
 import {useFileTreeStore} from '../model';
 import s from './FileTree.module.css';
 import {FileTreeControls} from './FilteTreeControls';
+import {widthPredicate} from './helpers';
 
 const {DirectoryTree} = Tree;
 
@@ -26,13 +27,18 @@ export const FileTree = (props: FileTreeProps) => {
     return unsubscribe;
   }, []);
 
-  const bodyRef = useRef<HTMLDivElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const resizerRef = useRef<HTMLDivElement | null>(null);
 
-  useResizer({bodyRef, resizerRef, type: 'horizontal'});
+  useResizer({
+    containerRef,
+    resizerRef,
+    type: 'horizontal',
+    widthPredicate: widthPredicate,
+  });
 
   return (
-    <div ref={bodyRef} className={classNames} {...anotherProps} style={{width: '250px'}}>
+    <div ref={containerRef} className={classNames} {...anotherProps} style={{width: '250px'}}>
       <FileTreeControls />
 
       <DirectoryTree
@@ -41,7 +47,7 @@ export const FileTree = (props: FileTreeProps) => {
         treeData={tree}
       />
 
-      <Resizer ref={resizerRef} type='horizontal' />
+      <Resizer ref={resizerRef} type='horizontal' placement='right' />
     </div>
   );
 };

@@ -1,2 +1,40 @@
 .resizer {
+  user-select: none;
+  position: absolute;
+  z-index: 100;
+
+  &:hover .line {
+    background-color: var(--color-primary);
+  }
+}
+
+.resizer.active .line {
+  background-color: var(--color-primary);
+}
+
+.line {
+  background-color: inherit;
+  transition: background-color 0.2s ease 0.2s;
+}
+
+.line.horizontal {
+  width: 3px;
+  margin-left: 2px;
+  height: 100%;
+}
+
+.resizer.horizontal {
+  cursor: col-resize;
+  height: 100%;
+  width: 5px;
+}
+
+.resizer.right {
+  top: 0;
+  right: -2px;
+  bottom: 0;
+}
+
+.relative {
+  position: relative;
 }
