@@ -5,7 +5,7 @@ import {cn} from '@/shared/lib/classNames';
 import {preventDefault} from '@/shared/lib/event';
 import {useInputState} from '@/shared/lib/hooks';
 import type {PropsOf} from '@/shared/types';
-import {changeProject, removeProject} from '../api';
+import {updateProject, removeProject} from '../api';
 import s from './ProjectItem.module.css';
 
 export type ProjectPickerProps = {
@@ -24,7 +24,7 @@ export const ProjectItem = (props: ProjectPickerProps) => {
 
   const enableIsEdit = preventDefault(() => setIsEdit(true));
   const disableIsEdit = preventDefault(() => {
-    changeProject({...project, name: newName});
+    updateProject({...project, name: newName});
     setIsEdit(false);
   });
 

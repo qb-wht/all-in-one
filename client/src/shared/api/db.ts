@@ -28,4 +28,8 @@ localDB.createIndex({
   index: {fields: ['type'], name: 'TypeIndex'},
 });
 
+localDB.createIndex({
+  index: {fields: ['projectId'], name: 'ProjectIdIndex'},
+});
+
 export const db = localDB;

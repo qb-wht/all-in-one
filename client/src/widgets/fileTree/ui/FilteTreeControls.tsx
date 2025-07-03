@@ -1,4 +1,5 @@
 import {Button, Input, Modal} from 'antd';
+import {useEditorStore} from '@/entities/editor';
 import {cn} from '@/shared/lib/classNames';
 import {useInputState} from '@/shared/lib/hooks';
 import type {PropsOf} from '@/shared/types';
@@ -12,6 +13,8 @@ export const FileTreeControls = (props: FileTreeProps) => {
   const classNames = cn('row pl-1', className).build();
 
   const isOpenCreateFileModal = useFileTreeStore((state) => state.isOpenCreateFileModal);
+  const projectId = useEditorStore((state) => state.projectId);
+
   const changeIsOpenCreateFileModal = useFileTreeStore(
     (state) => state.changeIsOpenCreateFileModal,
   );
@@ -26,7 +29,7 @@ export const FileTreeControls = (props: FileTreeProps) => {
         title='Create File'
         open={isOpenCreateFileModal}
         onOk={() => {
-          createFile({path});
+          createFile({path, projectId: projectId});
           changeIsOpenCreateFileModal(false);
         }}
         onCancel={() => changeIsOpenCreateFileModal(false)}

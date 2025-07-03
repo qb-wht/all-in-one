@@ -1,8 +1,8 @@
 import {Editor, useMonaco} from '@monaco-editor/react';
 import {useEffect} from 'react';
+import {useEditorStore} from '@/entities/editor';
 import {cn} from '@/shared/lib/classNames';
 import type {PropsOf} from '@/shared/types';
-import {useCodeEditorStore} from '../model';
 import s from './CodeEditor.module.css';
 
 export type CodeEditorProps = {} & PropsOf<HTMLDivElement>;
@@ -12,8 +12,8 @@ export const CodeEditor = (props: CodeEditorProps) => {
   const classNames = cn(s.codeEditorContainer, className).build();
 
   const monaco = useMonaco();
-  const content = useCodeEditorStore((state) => state.content);
-  const changeContent = useCodeEditorStore((state) => state.changeContent);
+  const content = useEditorStore((state) => state.content);
+  const changeContent = useEditorStore((state) => state.changeContent);
 
   useEffect(() => {
     if (!monaco) return;

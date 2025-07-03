@@ -1,1 +1,13 @@
-export type {DocTypes, AllDocs, Project, ProjectData, File, FileData} from './db';
+export type {
+  DocTypes,
+  AllDocs,
+  DocInfo,
+  Project,
+  ProjectData,
+  CreateProjectDataPrivate,
+  CreateProjectDataPublic,
+  File,
+  FileData,
+  CreateFileDataPrivate,
+  CreateFileDataPublic,
+} from './db';

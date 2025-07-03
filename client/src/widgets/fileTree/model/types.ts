@@ -1,10 +1,5 @@
 import type {DataNode} from 'antd/es/tree';
 import type {File} from '@/shared/api';
-import type {PartialWithoutKeys} from '@/shared/types';
-
-export interface CreateFileDataPublic extends PartialWithoutKeys<File, 'path'> {}
-
-export interface CreateFileDataPrivate extends PartialWithoutKeys<File, 'path' | 'type'> {}
 
 export type FolderNode = File &
   DataNode & {

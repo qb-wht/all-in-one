@@ -1,9 +1,10 @@
 import {Link} from '@tanstack/react-router';
 import {Button, Image, Input, List} from 'antd';
 import {useEffect, useState} from 'react';
+import {projectService} from '@/shared/api';
 import {cn} from '@/shared/lib/classNames';
 import type {PropsOf} from '@/shared/types';
-import {createProject, subscribeOnProjectsChanges} from '../api';
+import {createProject, getProjects} from '../api';
 import {useProjectsStore} from '../model';
 import {ProjectItem} from './ProjectItem';
 
@@ -13,10 +14,19 @@ export const ProjectPicker = (props: ProjectPickerProps) => {
   const {className, ...anotherProps} = props;
   const classNames = cn('column g-2 p-1 ai-center', className).build();
 
-  const {projects} = useProjectsStore((state) => state);
+  const projects = useProjectsStore((state) => state.projects);
+  const changeProjects = useProjectsStore((state) => state.changeProjects);
 
   useEffect(() => {
-    const unsubscribe = subscribeOnProjectsChanges();
+    const projects = () => {
+      getProjects().then((projects) => {
+        changeProjects(projects);
+      });
+    };
+
+    projects();
+
+    const unsubscribe = projectService.subscribe(projects, projects);
     return unsubscribe;
   }, []);
 

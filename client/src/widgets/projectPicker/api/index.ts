@@ -1,8 +1,1 @@
-export {
-  subscribeOnProjectsChanges,
-  getProjects,
-  getProject,
-  createProject,
-  changeProject,
-  removeProject,
-} from './api';
+export {getProjects, getProject, createProject, updateProject, removeProject} from './api';

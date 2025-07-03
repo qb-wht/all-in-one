@@ -1,47 +1,23 @@
-import {db, type File} from '@/shared/api';
-import {getFileName} from '@/shared/lib/files';
-import {useFileTreeStore} from '../model';
-import {createTree} from '../model/reducers';
-import type {CreateFileDataPrivate, CreateFileDataPublic} from '../model/types';
+import {type File} from '@/shared/api';
+import type {CreateFileDataPublic} from '@/shared/api';
+import {fileService} from '@/shared/api';
 
-export const getFiles = async () => {
-  const res = await db.find({
-    selector: {type: 'file'},
-  });
-
-  useFileTreeStore.getState().changeTree(createTree(res.docs as File[]));
-
-  return res;
+export const createFile = async (data: CreateFileDataPublic) => {
+  return fileService.create(data);
 };
 
-export const createFile = async (file: CreateFileDataPublic): Promise<PouchDB.Core.Response> => {
-  const fileData: CreateFileDataPrivate = {
-    ...file,
-    type: 'file',
-    name: getFileName(file.path),
-  };
-
-  const res = await db.post(fileData as File);
-
-  return res;
+export const updateFile = async (file: File) => {
+  return fileService.update(file);
 };
 
-export const removeFile = async (file: File): Promise<PouchDB.Core.Response> => {
-  const res = await db.remove(file);
-
-  return res;
+export const getFile = async (id: string): Promise<File> => {
+  return fileService.get(id);
 };
 
-export const subscribeOnFilesChanges = () => {
-  getFiles();
+export const removeFile = async (file: File) => {
+  return fileService.remove(file);
+};
 
-  const changes = db
-    .changes({
-      since: 'now',
-      live: true,
-      include_docs: true,
-    })
-    .on('change', getFiles);
-
-  return () => changes.cancel();
+export const getFiles = async (projectId: string): Promise<File[]> => {
+  return await fileService.getAll(projectId);
 };

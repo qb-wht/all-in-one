@@ -1,10 +1,13 @@
 import {Tree} from 'antd';
 import {useEffect, useRef} from 'react';
+import {useEditorStore} from '@/entities/editor';
+import {fileService} from '@/shared/api';
 import {Resizer, useResizer} from '@/shared/components/resizer';
 import {cn} from '@/shared/lib/classNames';
 import type {PropsOf} from '@/shared/types';
-import {subscribeOnFilesChanges} from '../api/api';
+import {getFiles} from '../api';
 import {useFileTreeStore} from '../model';
+import {createTree} from '../model/reducers';
 import s from './FileTree.module.css';
 import {FileTreeControls} from './FilteTreeControls';
 import {widthPredicate} from './helpers';
@@ -20,12 +23,21 @@ export const FileTree = (props: FileTreeProps) => {
   const openedFilePath = useFileTreeStore((state) => state.openedFilePath);
   const changeOpenedFilePath = useFileTreeStore((state) => state.changeOpenedFilePath);
   const tree = useFileTreeStore((state) => state.tree);
+  const changeTree = useFileTreeStore((state) => state.changeTree);
+  const projectId = useEditorStore((state) => state.projectId);
 
   useEffect(() => {
-    const unsubscribe = subscribeOnFilesChanges();
+    const files = () => {
+      getFiles(projectId).then((files) => {
+        changeTree(createTree(files));
+      });
+    };
 
+    files();
+
+    const unsubscribe = fileService.subscribe(files, files);
     return unsubscribe;
-  }, []);
+  }, [projectId]);
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const resizerRef = useRef<HTMLDivElement | null>(null);
