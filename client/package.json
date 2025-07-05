@@ -16,6 +16,7 @@
     "@tanstack/react-router-devtools": "^1.121.41",
     "antd": "^5.26.2",
     "events": "^3.3.0",
+    "monaco-editor": "^0.52.2",
     "pouchdb": "^9.0.0",
     "pouchdb-browser": "^9.0.0",
     "pouchdb-find": "^9.0.0",

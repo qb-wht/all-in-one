@@ -2,8 +2,8 @@ import {create} from 'zustand';
 import type {FileTreeNode} from './types';
 
 export interface FileTreeState {
-  openedFilePath?: string;
-  changeOpenedFilePath: (value?: string) => void;
+  selectedNodes: FileTreeNode[];
+  changeSelectedNodes: (value: FileTreeNode[]) => void;
   isOpenCreateFileModal: boolean;
   changeIsOpenCreateFileModal: (value?: boolean) => void;
   tree: FileTreeNode[];
@@ -11,8 +11,8 @@ export interface FileTreeState {
 }
 
 export const useFileTreeStore = create<FileTreeState>((set) => ({
-  openedFilePath: undefined,
-  changeOpenedFilePath: (value) => set(() => ({openedFilePath: value})),
+  selectedNodes: [],
+  changeSelectedNodes: (value) => set(() => ({selectedNodes: value})),
   isOpenCreateFileModal: false,
   changeIsOpenCreateFileModal: (value) => set(() => ({isOpenCreateFileModal: value})),
   tree: [],

@@ -3,6 +3,7 @@ import type {File} from '@/shared/api';
 
 export type FolderNode = File &
   DataNode & {
+    key: string;
     nodeType: 'folder';
     _id: null;
     _rev: null;
@@ -12,6 +13,7 @@ export type FolderNode = File &
 
 export type FileNode = File &
   DataNode & {
+    key: string;
     nodeType: 'file';
     children: [];
   };

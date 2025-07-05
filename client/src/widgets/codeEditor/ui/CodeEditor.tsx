@@ -1,7 +1,9 @@
 import {Editor, useMonaco} from '@monaco-editor/react';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {useEditorStore} from '@/entities/editor';
+import {updateFile, type FileNode} from '@/entities/file';
 import {cn} from '@/shared/lib/classNames';
+import {useAbortableDebounce} from '@/shared/lib/hooks';
 import type {PropsOf} from '@/shared/types';
 import s from './CodeEditor.module.css';
 
@@ -12,8 +14,9 @@ export const CodeEditor = (props: CodeEditorProps) => {
   const classNames = cn(s.codeEditorContainer, className).build();
 
   const monaco = useMonaco();
-  const content = useEditorStore((state) => state.content);
-  const changeContent = useEditorStore((state) => state.changeContent);
+  const openedFile = useEditorStore((state) => state.openedFile);
+  const changeOpenedFile = useEditorStore((state) => state.changeOpenedFile);
+  const [localValue, setLocalValue] = useState<string | undefined>();
 
   useEffect(() => {
     if (!monaco) return;
@@ -47,16 +50,38 @@ export const CodeEditor = (props: CodeEditorProps) => {
     });
   }, [monaco]);
 
+  useEffect(() => {
+    if (openedFile) {
+      openedFile?.content.text().then((value) => setLocalValue(value));
+      return;
+    }
+
+    setLocalValue(undefined);
+  }, [openedFile]);
+
+  const {fn} = useAbortableDebounce((value: string, openedFile: FileNode) => {
+    updateFile({
+      ...openedFile,
+      content: new Blob([value || ''], {type: 'text/plain'}),
+    }).then((file) => changeOpenedFile({...openedFile, ...file}));
+  }, 500);
+
   return (
     <div className={classNames} {...anotherProps}>
-      <Editor
-        height='100%'
-        width='100%'
-        defaultLanguage={'web-blueprints'}
-        defaultValue={content}
-        onChange={(value) => changeContent(value || '')}
-        theme='vs-light'
-      />
+      {localValue !== undefined && (
+        <Editor
+          height='100%'
+          width='100%'
+          value={localValue}
+          defaultLanguage={'web-blueprints'}
+          onChange={(value) => {
+            if (openedFile) {
+              fn(value || '', openedFile);
+            }
+          }}
+          theme='vs-light'
+        />
+      )}
     </div>
   );
 };

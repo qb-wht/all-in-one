@@ -37,7 +37,6 @@ export const createTree = (files: File[]): FileTreeNode[] => {
           const folderNode: FolderNode = {
             title: part,
             isLeaf: false,
-            type: 'file',
             key: currentPath,
             nodeType: 'folder',
             _id: null,
@@ -46,7 +45,7 @@ export const createTree = (files: File[]): FileTreeNode[] => {
             name: part,
             path: currentPath,
             children: [],
-          };
+          } as FolderNode;
 
           node = folderNode;
           currentLevel.push(node);

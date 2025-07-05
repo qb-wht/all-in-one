@@ -1,10 +1,9 @@
 import {Button, Input, Modal} from 'antd';
 import {useEditorStore} from '@/entities/editor';
+import {createFile, useFileTreeStore} from '@/entities/file';
 import {cn} from '@/shared/lib/classNames';
 import {useInputState} from '@/shared/lib/hooks';
 import type {PropsOf} from '@/shared/types';
-import {createFile} from '../api';
-import {useFileTreeStore} from '../model';
 
 export type FileTreeProps = {} & PropsOf<HTMLDivElement>;
 

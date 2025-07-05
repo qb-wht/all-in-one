@@ -32,7 +32,7 @@ export interface CreateProjectDataPrivate extends PartialWithoutKeys<Project, 'n
 export interface FileData {
   name: string;
   path: string;
-  content: string;
+  content: Blob;
   projectId: string;
 }
 
@@ -42,6 +42,7 @@ export interface File extends PouchDBDocument, FileData {
 
 export interface CreateFileDataPublic extends PartialWithoutKeys<File, 'path' | 'projectId'> {}
 
-export interface CreateFileDataPrivate extends PartialWithoutKeys<File, 'path' | 'type'> {}
+export interface CreateFileDataPrivate
+  extends PartialWithoutKeys<File, 'path' | 'type' | 'projectId' | 'content'> {}
 
 export type AllDocs = Project | File;

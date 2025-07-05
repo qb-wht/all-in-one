@@ -4,6 +4,7 @@ import {db as pouchDB} from '../db';
 import type {AllDocs, DocInfo, File, CreateFileDataPrivate, CreateFileDataPublic} from '../types';
 import {CRUDPouchDB} from './CRUDPouchDB';
 import {projectService, type ProjectService} from './ProjectService';
+import {initialContent} from './constants';
 
 export class FileService extends CRUDPouchDB<File> implements CRUD, Observable<File, DocInfo> {
   constructor(
@@ -22,6 +23,7 @@ export class FileService extends CRUDPouchDB<File> implements CRUD, Observable<F
 
     const fileData: CreateFileDataPrivate = {
       ...file,
+      content: new Blob([initialContent], {type: 'text/plait'}),
       type: 'file',
       name: getFileName(file.path),
     };
