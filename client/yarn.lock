@@ -2364,7 +2364,9 @@ __metadata:
     typescript: "npm:~5.8.3"
     typescript-eslint: "npm:^8.30.1"
     vite: "npm:^6.3.5"
+    vite-plugin-wasm: "npm:^3.4.1"
     vite-tsconfig-paths: "npm:^5.1.4"
+    web-blueprints-diagram: "file:../binary/wasm/pkg"
     zustand: "npm:^5.0.5"
   languageName: unknown
   linkType: soft
@@ -5914,6 +5916,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vite-plugin-wasm@npm:^3.4.1":
+  version: 3.4.1
+  resolution: "vite-plugin-wasm@npm:3.4.1"
+  peerDependencies:
+    vite: ^2 || ^3 || ^4 || ^5 || ^6
+  checksum: 10c0/274bbe7bb15c596e070b3dd1caf9de3a1f16d4f6aa59a1a116b58a96dc9759d1a08e0a9d0c5923e8119147e6365490a009ceb98c99d62b6439db6549ebdde8d5
+  languageName: node
+  linkType: hard
+
 "vite-tsconfig-paths@npm:^5.1.4":
   version: 5.1.4
   resolution: "vite-tsconfig-paths@npm:5.1.4"
@@ -5998,6 +6009,13 @@ __metadata:
   dependencies:
     defaults: "npm:^1.0.3"
   checksum: 10c0/5b61ca583a95e2dd85d7078400190efd452e05751a64accb8c06ce4db65d7e0b0cde9917d705e826a2e05cc2548f61efde115ffa374c3e436d04be45c889e5b4
+  languageName: node
+  linkType: hard
+
+"web-blueprints-diagram@file:../binary/wasm/pkg::locator=client%40workspace%3A.":
+  version: 0.1.0
+  resolution: "web-blueprints-diagram@file:../binary/wasm/pkg#../binary/wasm/pkg::hash=8ecca3&locator=client%40workspace%3A."
+  checksum: 10c0/1333be4ba89791724627096f104efdc924bf1814f6d9e4a35426be4cfbbaa8b4308998feef56f264c47434d1b5d0b4232403db2ff21cc887a200cae8a3f7c047
   languageName: node
   linkType: hard
 

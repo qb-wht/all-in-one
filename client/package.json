@@ -22,6 +22,7 @@
     "pouchdb-find": "^9.0.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "web-blueprints-diagram": "file:../binary/wasm/pkg",
     "zustand": "^5.0.5"
   },
   "devDependencies": {
@@ -43,6 +44,7 @@
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.30.1",
     "vite": "^6.3.5",
+    "vite-plugin-wasm": "^3.4.1",
     "vite-tsconfig-paths": "^5.1.4"
   }
 }
