@@ -1,6 +1,5 @@
 import {Link} from '@tanstack/react-router';
 import {Button} from 'antd';
-import {greet} from 'web-blueprints-diagram';
 import {cn} from '@/shared/lib/classNames';
 import type {PropsOf} from '@/shared/types';
 import s from './Navbar.module.css';
@@ -13,14 +12,6 @@ export const Navbar = (props: NavbarProps) => {
 
   return (
     <div className={classNames} {...anotherProps}>
-      <Button
-        onClick={() => {
-          greet();
-        }}
-      >
-        Hello World WASM
-      </Button>
-
       <Link to='/'>
         <Button>Home</Button>
       </Link>
