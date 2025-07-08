@@ -1,6 +1,6 @@
 import {Button} from 'antd';
 import {useEffect, useRef, useState} from 'react';
-import {greet, init, draw_rectangle, on_mouse_move_rectangle} from 'web-blueprints-diagram';
+import {greet, CanvasService} from 'web-blueprints-diagram';
 import {useEditorStore} from '@/entities/editor';
 import {cn} from '@/shared/lib/classNames';
 import type {PropsOf} from '@/shared/types';
@@ -14,6 +14,9 @@ export const ViewEditor = (props: ViewEditorProps) => {
 
   const [localValue, setLocalValue] = useState<string | undefined>();
 
+  const canvasServiceRef = useRef<CanvasService | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
   useEffect(() => {
     if (openedFile) {
       openedFile?.content.text().then((value) => setLocalValue(value));
@@ -23,36 +26,44 @@ export const ViewEditor = (props: ViewEditorProps) => {
     setLocalValue(undefined);
   }, [openedFile]);
 
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  useEffect(() => {
+    if (localValue) {
+      const canvas = new CanvasService();
+      canvas.draw_grid(20, '#f5f5f5');
+      canvasServiceRef.current = canvas;
+      return;
+    }
+
+    canvasServiceRef.current = null;
+  }, [localValue]);
 
   const handleClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    const canvasService = canvasServiceRef.current;
+    if (!canvasService) return;
+
     const rect = canvas.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-    draw_rectangle(Math.floor(x), Math.floor(y), 50, 'green');
+    canvasService.add_node(Math.floor(x), Math.floor(y), 100, 60, 'green');
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    const canvasService = canvasServiceRef.current;
+    if (!canvasService) return;
+
     const rect = canvas.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-    on_mouse_move_rectangle(Math.floor(x), Math.floor(y));
+    canvasService.on_mouse_move(Math.floor(x), Math.floor(y));
   };
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    init();
-  }, [localValue]);
 
   return (
     <div className={classNames} {...anotherProps}>
@@ -65,8 +76,8 @@ export const ViewEditor = (props: ViewEditorProps) => {
             id='canvas'
             onClick={handleClick}
             onMouseMove={handleMouseMove}
-            width={500}
-            height={500}
+            width={1200}
+            height={600}
             style={{border: '1px solid black'}}
           />
 

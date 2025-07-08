@@ -1,119 +1,128 @@
 mod utils;
+mod canvas;
 
 use wasm_bindgen::prelude::*;
-use web_sys::{window, CanvasRenderingContext2d, HtmlCanvasElement};
-use std::cell::RefCell;
-use std::vec::Vec;
-
-thread_local! {
-    static RECT_STORE: RefCell<Vec<Rectangle>> = RefCell::new(vec![]);
-    static CANVAS: RefCell<Option<HtmlCanvasElement>> = RefCell::new(None);
-    static CONTEXT: RefCell<Option<CanvasRenderingContext2d>> = RefCell::new(None);
-}
+use web_sys::{CanvasRenderingContext2d, HtmlCanvasElement};
+use crate::canvas::get_canvas;
 
 #[wasm_bindgen]
 extern "C" {
-    fn alert(s: &str);
+  fn alert(s: &str);
 }
 
 #[wasm_bindgen]
 pub fn greet() {
-  let a = format!("Hello, wasm!");
-
-  alert(&a);
+  alert("Hello, wasm!");
 }
 
 #[derive(Debug)]
-pub struct Rectangle {
-  pub x: f64,
-  pub y: f64,
-  pub size: f64,
-  pub color: String,
+struct Node {
+  x: f64,
+  y: f64,
+  width: f64,
+  height: f64,
+  color: String,
 }
 
 #[wasm_bindgen]
-pub fn init() {
-  let window = window().expect("No global `window` exists");
-  let document = window.document().expect("Should have a document on window");
-
-  let canvas = document
-    .get_element_by_id("canvas")
-    .expect("Should have a canvas")
-    .dyn_into::<HtmlCanvasElement>()
-    .expect("Should be a canvas");
-
-  let context = canvas
-    .get_context("2d")
-    .expect("Should have.ctx")
-    .expect("Should have.ctx")
-    .dyn_into::<CanvasRenderingContext2d>()
-    .expect("Should be a canvas");
-
-  CANVAS.with_borrow_mut(|store| {
-    *store = Some(canvas);
-  });
-
-  CONTEXT.with_borrow_mut(|store| {
-    *store = Some(context);
-  });
+pub struct CanvasService {
+  nodes: Vec<Node>,
+  canvas: HtmlCanvasElement,
+  context: CanvasRenderingContext2d,
 }
 
 #[wasm_bindgen]
-pub fn draw_rectangle(x: f64, y: f64, size: f64, color: &str) -> Result<(), JsValue> {
-  let rect = Rectangle {
-    x,
-    y,
-    size,
-    color: color.to_string(),
-  };
+impl CanvasService {
+  #[wasm_bindgen(constructor)]
+  pub fn new() -> CanvasService {
+    let canvas_struct = get_canvas();
+    CanvasService {
+      nodes: Vec::new(),
+      canvas: canvas_struct.canvas,
+      context: canvas_struct.context,
+    }
+  }
 
-  CONTEXT.with(|ctx| {
-    let ctx = ctx.borrow();
-    let ctx = ctx.as_ref().expect("Context not initialized");
+  pub fn draw_grid(&self, step: f64, color: &str) {
+    let width = self.canvas.width() as f64;
+    let height = self.canvas.height() as f64;
 
-    ctx.set_fill_style_str(color);
-    ctx.fill_rect(x, y, size, size);
+    self.context.begin_path();
 
-    RECT_STORE.with(|store| {
-      store.borrow_mut().push(rect);
-    });
+    let mut x = 0.0;
+    while x <= width {
+      self.context.move_to(x, 0.0);
+      self.context.line_to(x, height);
+      x += step;
+    }
 
-  });
+    let mut y = 0.0;
+    while y <= height {
+      self.context.move_to(0.0, y);
+      self.context.line_to(width, y);
+      y += step;
+    }
 
-  Ok(())
-}
+    self.context.set_stroke_style(&color.clone().into());
+    self.context.stroke();
+  }
 
-fn redraw_rectangle(rect: &mut Rectangle) -> Result<(), JsValue> {
-  CONTEXT.with(|ctx| {
-    let ctx = ctx.borrow();
-    let ctx = ctx.as_ref().expect("Context not initialized");
+  pub fn add_node(&mut self, x: f64, y: f64, width: f64, height: f64, color: &str) {
+    let node = Node {
+      x,
+      y,
+      width,
+      height,
+      color: color.to_string(),
+    };
+    self.draw_node(&node);
+    self.nodes.push(node);
+  }
 
-    ctx.set_fill_style_str(rect.color.as_str());
-    ctx.fill_rect(rect.x, rect.y, rect.size, rect.size);
-  });
+  fn fill_round_rect(
+    &self,
+    x: f64,
+    y: f64,
+    width: f64,
+    height: f64,
+    radius: f64,
+  ) {
+    let context = &self.context;
 
-  Ok(())
-}
-#[wasm_bindgen]
-pub fn on_mouse_move_rectangle(x: f64, y: f64) -> Result<(), JsValue> {
-  RECT_STORE.with(|store| {
-    store
-      .borrow_mut()
-      .iter_mut()
-      .for_each(|rect| {
-        if x >= rect.x
-          && x <= rect.x + rect.size
-          && y >= rect.y
-          && y <= rect.y + rect.size
-        {
-          rect.color = String::from("red");
-          redraw_rectangle(rect);
+    context.begin_path();
+
+    let r = radius.min(width / 2.0).min(height / 2.0);
+
+    context.move_to(x + r, y);
+    context.line_to(x + width - r, y);
+    context.quadratic_curve_to(x + width, y, x + width, y + r);
+    context.line_to(x + width, y + height - r);
+    context.quadratic_curve_to(x + width, y + height, x + width - r, y + height);
+    context.line_to(x + r, y + height);
+    context.quadratic_curve_to(x, y + height, x, y + height - r);
+    context.line_to(x, y + r);
+    context.quadratic_curve_to(x, y, x + r, y);
+
+    context.close_path();
+    context.fill();
+  }
+
+  pub fn on_mouse_move(&mut self, x: f64, y: f64) {
+    let context = &self.context;
+
+    for node in &self.nodes {
+        if x >= node.x && x <= node.x + node.width && y >= node.y && y <= node.y + node.height {
+          self.context.set_fill_style(&"red".into());
+          self.fill_round_rect(node.x, node.y, node.width, node.height, 10.0);
         } else {
-          rect.color = String::from("green");
-          redraw_rectangle(rect);
+          self.context.set_fill_style(&node.color.clone().into());
+          self.fill_round_rect(node.x, node.y, node.width, node.height, 10.0)
         }
-      });
-  });
+    }
+  }
 
- Ok(())
+  fn draw_node(&mut self, node: &Node) {
+    self.context.set_fill_style(&node.color.clone().into());
+    self.fill_round_rect(node.x, node.y, node.width, node.height, 10.0)
+  }
 }
