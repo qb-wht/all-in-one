@@ -1,5 +1,7 @@
 mod utils;
 mod canvas;
+mod parser;
+mod combinators;
 
 use wasm_bindgen::prelude::*;
 use web_sys::{CanvasRenderingContext2d, HtmlCanvasElement};
@@ -118,6 +120,20 @@ impl CanvasService {
           self.context.set_fill_style(&node.color.clone().into());
           self.fill_round_rect(node.x, node.y, node.width, node.height, 10.0)
         }
+    }
+  }
+
+  pub fn on_click(&mut self, x: f64, y: f64) {
+    let context = &self.context;
+
+    for node in &self.nodes {
+      if x >= node.x && x <= node.x + node.width && y >= node.y && y <= node.y + node.height {
+        self.context.set_fill_style(&"blue".into());
+        self.fill_round_rect(node.x, node.y, node.width, node.height, 10.0);
+      } else {
+        self.context.set_fill_style(&node.color.clone().into());
+        self.fill_round_rect(node.x, node.y, node.width, node.height, 10.0)
+      }
     }
   }
 

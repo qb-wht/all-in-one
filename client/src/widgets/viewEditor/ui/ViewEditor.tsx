@@ -1,6 +1,6 @@
 import {Button} from 'antd';
 import {useEffect, useRef, useState} from 'react';
-import {greet, CanvasService} from 'web-blueprints-diagram';
+import {greet, CanvasService, ParseService} from 'web-blueprints-diagram';
 import {useEditorStore} from '@/entities/editor';
 import {cn} from '@/shared/lib/classNames';
 import type {PropsOf} from '@/shared/types';
@@ -31,6 +31,11 @@ export const ViewEditor = (props: ViewEditorProps) => {
       const canvas = new CanvasService();
       canvas.draw_grid(20, '#f5f5f5');
       canvasServiceRef.current = canvas;
+
+      const a = ParseService.new();
+
+      a.parse(localValue);
+
       return;
     }
 
