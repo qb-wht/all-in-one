@@ -32,7 +32,7 @@ export const ViewEditor = (props: ViewEditorProps) => {
       canvas.draw_grid(20, '#f5f5f5');
       canvasServiceRef.current = canvas;
 
-      const a = ParseService.new();
+      const a = new ParseService();
 
       a.parse(localValue);
 

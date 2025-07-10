@@ -1,4 +1,5 @@
 use regex::Regex;
+use wasm_bindgen::JsValue;
 use wasm_bindgen::prelude::wasm_bindgen;
 use web_sys::console;
 
@@ -24,8 +25,22 @@ impl ParseService {
 			Pattern::Predicate(Box::new(|c| c == "b")),
 		];
 
-		let a = tag(patterns);
+		let source_iter = "alala"
+			.chars()
+			.map(|c| c.to_string())
+			.collect::<Vec<String>>()
+			.into_iter();
 
-		console::log_1(&format!("parse {}", code).into());
+		let boxed_iter = Box::new(source_iter);
+
+
+		let a = tag(patterns)(boxed_iter);
+
+
+		for res in a {
+			console::log_1(&JsValue::from_str(&format!("parse {:?}", res.0)));
+		}
+
+		// console::log_1(&format!("parse {}", code).into());
 	}
 }

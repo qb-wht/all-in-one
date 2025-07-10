@@ -1,9 +1,11 @@
 use regex::Regex;
 
+#[derive(Debug)]
 pub enum TokenTypes {
 	TAG,
 }
 
+#[derive(Debug)]
 pub struct Token {
 	token_type: TokenTypes,
 	value: String,
@@ -24,9 +26,9 @@ where
 	let patterns: Vec<Pattern> = patterns.into_iter().collect();
 
 	Box::new(move |mut source| {
-		let chunk = source.next();
+		let next_char = source.next();
 
-		let char = match chunk {
+		let char = match next_char {
 			Some(c) => c,
 			None => {
 				// Возможно ошибки

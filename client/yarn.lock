@@ -6014,8 +6014,8 @@ __metadata:
 
 "web-blueprints-diagram@file:../binary/wasm/pkg::locator=client%40workspace%3A.":
   version: 0.1.0
-  resolution: "web-blueprints-diagram@file:../binary/wasm/pkg#../binary/wasm/pkg::hash=9800c0&locator=client%40workspace%3A."
-  checksum: 10c0/396dac809783238fd35376d5f0f819d2e451113fba76762fda889b029454785f53a552680654910e052d83ebcca79e70bc3475fbb129ac178b4a548d17c162b2
+  resolution: "web-blueprints-diagram@file:../binary/wasm/pkg#../binary/wasm/pkg::hash=02c1b9&locator=client%40workspace%3A."
+  checksum: 10c0/8c1887ced1f05b104222794c9d60cc4606d454d961f7402045ffafe083602dce241405cb5a2f3ba9818be60763627850a9e4c364724ec19a599cb8401c17829c
   languageName: node
   linkType: hard
 
