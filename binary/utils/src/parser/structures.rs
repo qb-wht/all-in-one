@@ -1,5 +1,7 @@
-pub enum Pattern<'a> {
-	Str(&'a str),
+pub enum Pattern {
+	Char(char),
+	// Callback,
+	// 	// Regexp
 }
 
 #[derive(Debug)]
