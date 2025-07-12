@@ -1,7 +1,9 @@
+use regex::Regex;
+
 pub enum Pattern {
 	Char(char),
-	// Callback,
-	// 	// Regexp
+	Callback(Box<dyn Fn(char) -> bool>),
+	Regex(Result<Regex, regex::Error>),
 }
 
 #[derive(Debug)]

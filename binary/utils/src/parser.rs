@@ -1,6 +1,8 @@
 mod collectors;
 mod combinators;
 mod structures;
+
+use regex::Regex;
 use collectors::get;
 use combinators::seq;
 use crate::parser::structures::Pattern;
@@ -11,8 +13,8 @@ pub fn parser() {
 	let pattern1 = vec![
 		Pattern::Char('<'),
 		Pattern::Char('d'),
-		Pattern::Char('i'),
-		Pattern::Char('v'),
+		Pattern::Callback(Box::new(|char| char == 'i')),
+		Pattern::Regex(Regex::new(r"\w")),
 		Pattern::Char('>'),
 	].into_iter();
 
