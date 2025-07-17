@@ -1,54 +1,64 @@
+use std::cell::RefCell;
 use std::str::Chars;
 use std::vec::IntoIter;
+use std::iter::from_fn;
 use crate::parser::structures::{Pattern, Token, TokenTypes};
 
-pub fn get (patterns: IntoIter<Pattern>, source: & mut Chars) -> Result<Token, String> {
-	let mut next_value = source.next();
+pub fn get<'a>(
+	patterns: IntoIter<Pattern>,
+) -> Box<dyn FnMut(&'a mut Chars<'a>) -> Box<dyn Iterator<Item = Result<Token, String>> + 'a> + 'a> {
+	let patterns = std::rc::Rc::new(RefCell::new(patterns));
 
-	let mut token = Token {
-		value: String::new(),
-		token_type: TokenTypes::GET
-	};
+	Box::new(move |source: &'a mut Chars<'a>| {
+		let patterns = std::rc::Rc::clone(&patterns);
+		
+		Box::new(from_fn(move || {
+			let mut patterns = patterns.borrow_mut();
+			let pattern = match patterns.next() {
+				Some(p) => p,
+				None => return None,
+			};
 
-	for pattern in patterns {
-		match next_value {
-			Some(value) => {
-				match pattern {
-					Pattern::Char(char) => {
-						if (char == value) {
-							token.value.push_str(value.to_string().as_str());
+			let next_value = match source.next() {
+				Some(v) => v,
+				None => return None,
+			};
+
+			let mut token = Token {
+				value: String::new(),
+				token_type: TokenTypes::GET,
+			};
+
+			match pattern {
+				Pattern::Char(c) => {
+					if c == next_value {
+						token.value.push(next_value);
+						Some(Ok(token))
+					} else {
+						Some(Err("NoteValue".into()))
+					}
+				}
+				Pattern::Regex(res) => match res {
+					Ok(regex) => {
+						if regex.is_match(&next_value.to_string()) {
+							token.value.push(next_value);
+							Some(Ok(token))
 						} else {
-							return Err(String::from("NoteValue"));
+							Some(Err("NoteValue".into()))
 						}
 					}
-					Pattern::Regex(regex) => {
-						match regex {
-							Ok(regex) => {
-								if (regex.is_match(value.to_string().as_str())) {
-									token.value.push_str(value.to_string().as_str());
-								} else {
-									return Err(String::from("NoteValue"));
-								}
-							},
-							Err(regex) => {}
-						}
-					}
-					Pattern::Callback(callback) => {
-						if (callback(value)) {
-							token.value.push_str(value.to_string().as_str());
-						} else {
-							return Err(String::from("NoteValue"));
-						}
+					Err(_) => Some(Err("Invalid regex".into())),
+				},
+				Pattern::Callback(callback) => {
+					if callback(next_value) {
+						token.value.push(next_value);
+						Some(Ok(token))
+					} else {
+						Some(Err("NoteValue".into()))
 					}
 				}
 			}
-			None => {
-				return Err(String::from("NoteValue"));
-			}
-		}
-
-		next_value = source.next()
-	}
-
-	Ok(token)
+		}))
+	})
 }
+

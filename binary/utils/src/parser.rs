@@ -25,10 +25,8 @@ pub fn parser() {
 		Pattern::Char('a'),
 	].into_iter();
 
-	let a = get(pattern1, & mut source);
-	let b = get(pattern2, & mut source);
+	let mut a = get(pattern1)(& mut source);
 
-	println!("a: {:?}", a);
-	println!("b: {:?}", b);
+	println!("a: {:?}", a.next().unwrap());
 	seq();
 }

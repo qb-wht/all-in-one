@@ -6,7 +6,7 @@ pub enum Pattern {
 	Regex(Result<Regex, regex::Error>),
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum TokenTypes {
 	// Collectors
 	GET,
@@ -14,7 +14,7 @@ pub enum TokenTypes {
 	SEQ,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Token {
 	pub token_type: TokenTypes,
 	pub value: String,
