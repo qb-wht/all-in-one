@@ -1,33 +1,30 @@
 use std::cell::RefCell;
-use std::str::Chars;
 use std::vec::IntoIter;
 use std::rc::Rc;
 use std::iter::from_fn;
-use crate::parser::structures::{Pattern, Token, TokenTypes};
+use crate::parser::structures::{Parser, Pattern, TagOptions, Token, TokenTypes};
 
-type TokenResult<'a> = Result<Token, String>;
-type TokenIterator<'a> = Box<dyn Iterator<Item = TokenResult<'a>> + 'a>;
-type Parser<'a> = Box<dyn FnMut(Rc<RefCell<Chars<'a>>>) -> TokenIterator<'a> + 'a>;
-
-pub fn get<'a>(
+pub fn tag<'a>(
 	patterns: IntoIter<Pattern>,
 ) -> Parser<'a> {
 	let patterns = Rc::new(RefCell::new(patterns));
 
-	Box::new(move |source| {
+	Box::new(move |source, options: TagOptions| {
 		let patterns = Rc::clone(&patterns);
 		let source = Rc::clone(&source);
 
 		Box::new(from_fn(move || {
 			let mut patterns = patterns.borrow_mut();
 
-
 			let pattern = patterns.next()?;
 			let next_value = source.borrow_mut().next()?;
+			
+			let token_name = options.token_name.clone();
 
 			let mut token = Token {
 				value: String::new(),
-				token_type: TokenTypes::GET,
+				token_type: TokenTypes::TAG,
+				token_name,
 			};
 
 			match pattern {
